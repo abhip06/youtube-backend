@@ -6,7 +6,7 @@ const PORT = process.env.PORT || 8080;
 connectDB()
     .then(() => {
         app.listen(PORT, () => {
-            console.log(`[server]: Server is listening on http://localhost:${PORT}`);
+            console.log(`\n[server]: Server is listening on http://localhost:${PORT}`);
         });
     })
     .catch((err) => {
