@@ -98,7 +98,7 @@ const registerUser = asyncHandler(async (req, res) => {
 const loginUser = asyncHandler(async (req, res) => {
     /*
         1. get data form req.body
-        2. check username or email
+        2. check username or email exist
         3. find the user
         4. password check
         5. generate access and refresh token
@@ -108,9 +108,15 @@ const loginUser = asyncHandler(async (req, res) => {
 
     const { email, username, password } = req.body;
 
-    if (!email || !username) {
+    if (!email && !username) {
         throw new ApiError(400, "Username or email is required.");
     }
+
+    // Here is the alternative of above code.
+    // if (!(username || !email)) {
+    //     throw new ApiError(400, "Username or email is required.");
+    // }
+
     if (!password) {
         throw new ApiError(400, "Password is required field.");
     }
@@ -125,7 +131,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
     const isPasswordValid = await user.isPasswordCorrect(password);
 
-    if (!user) {
+    if (!isPasswordValid) {
         throw new ApiError(400, "Invalid user credentials.");
     }
 
@@ -176,7 +182,9 @@ const logoutUser = asyncHandler(async (req, res) => {
         .status(200)
         .clearCookie("accessToken", options)
         .clearCookie("refreshToken", options)
-        .json(200, {}, "User logged out successfully.");
+        .json(
+            new ApiResponse(200, {}, "User logged out successfully.")
+        );
 });
 
 export {
