@@ -329,7 +329,7 @@ const getUserChannelProfile = asyncHandler(async (req, res) => {
     const { username } = req.params;
 
     if (!username?.trim()) {
-        throw new ApiError(400, "Please provide username.");
+        throw new ApiError(400, "Username not provided.");
     }
 
     const channel = await User.aggregate([
