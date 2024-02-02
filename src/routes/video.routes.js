@@ -8,8 +8,11 @@ import {
     updateVideo
 } from "../controllers/video.controller";
 import { upload } from "../middlewares/multer.middleware";
+import { verifyJWT } from "../middlewares/auth.middleware";
 
 const router = Router();
+
+router.use(verifyJWT); // Apply verifyJWT middleware to all routes in this file
 
 router.route("/")
     .get(getAllVideos)
